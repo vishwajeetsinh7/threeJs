@@ -5,22 +5,40 @@ const renderer = new THREE.WebGLRenderer();
 renderer.setSize( window.innerWidth, window.innerHeight );
 document.body.appendChild( renderer.domElement );
 
-const geometry = new THREE.BoxGeometry();
-const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
-const cube = new THREE.Mesh( geometry, material );
-scene.add( cube );
+renderer.setClearColor( 0xFFF000)
 
-camera.position.z = 6;
+const light = new THREE.AmbientLight( 0xFFFFFf ); // soft white light
+scene.add( light );
 
-renderer.render(scene, camera);
+// const geometry = new THREE.BoxGeometry();
+// const material = new THREE.MeshBasicMaterial( { color: 0x33EEE5} );
+// const cube = new THREE.Mesh( geometry, material );
+// scene.add( cube );
 
+camera.position.z = 2;
 
-function animate() {
-	requestAnimationFrame( animate ); 
+const loader  = new THREE.GLTFLoader()
+
+loader.load("../models/air_force(gltf)/scene.gltf", function(gltf){
+    scene.add( gltf.scene );
+    // gltf.scene.scale.set( .4, .4 ,.4); // decreas the size
+
     
-    cube.rotation.y += 0.01;
-    cube.rotation.x += 0.01; 
-    cube.rotation.z += 0.01;   
-	renderer.render( scene, camera );
+})
+
+
+function animate(){
+    renderer.render( scene , camera );
+    requestAnimationFrame( animate );
 }
 animate();
+
+// window.addEventListener('resize', onWinowResize, false);
+
+// function onWidnowsResize(){
+
+//     camera.aspect = window.innerWidth / window.innerHeight;
+//     camera.updateProjectionMatrix();
+
+//     renderer.setSize( window.innerWidth, window.innerHeight);
+// }
